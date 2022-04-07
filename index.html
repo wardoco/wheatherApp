@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="styles.css">
+        <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function() {
+
+                // Get Location
+                navigator.geolocation.getCurrentPosition(success, error);
+            
+                function success(pos) {
+                    var lat=pos.coords.latitude;
+                    var long = pos.coords.longtitude;
+                    weather(lat, long);
+                }
+            
+                function error() {
+                    console.log('error');
+                }
+            
+                function weather(lat, long) {
+                    var URL = 'https://fcc-weather-api.glitch.me/api/current?lat=$(lat)&lon=$(long)';
+            
+                    $.getJSON(URL, function(data){
+                        console.log(data);
+                        updateDOM(data)
+                    });
+                }
+            
+            weather();
+            
+            function updateDOM() {
+            
+                var city = data.name;
+                var temp = data.mai.temp;
+                var desc = data.weather[0].description;
+                var icon = data.weather[0].icon;
+            
+                $('#city').html(city);
+                $('#temp').html(temp);
+                $('#desc').html(desc);
+                $('#icon').attr('src', icon);
+            
+            }
+            
+            });
+
+        </script>
+
+    </head>
+    <body>
+        <div class="container">
+            <h2 id="city">Leeds</h2>
+            <div class="middle">
+                <img src="" alt="icon" id="icon">
+                <div class="degrees">
+                    <h1 id="temp">19</h1>  
+                    <span>&#176</span>
+                </div>
+                <h3 id="desc">Sunny</h3> 
+            </div>
+        </div>
+    </body>
+</html>
